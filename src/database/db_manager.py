@@ -7,6 +7,8 @@ class LocalDB:
         self.conn.row_factory = sqlite3.Row
         self.cursor = self.conn.cursor()
 
+        print("Conexión con la db establecida")
+
         self.conn.execute("PRAGMA foreign_keys = ON")
 
         self.cursor.execute('''
@@ -20,6 +22,8 @@ class LocalDB:
             );
         ''')
 
+        print("Tabla de dispositivo creada")
+
         self.cursor.execute('''
             CREATE TABLE IF NOT EXISTS sensors (
                 id_sensor INTEGER PRIMARY KEY,
@@ -29,6 +33,8 @@ class LocalDB:
                 FOREIGN KEY (id_device) REFERENCES device_info(id_device) ON DELETE CASCADE
             );
         ''')
+
+        print("Tabla de sensores creada")
 
         self.cursor.execute('''
             CREATE TABLE IF NOT EXISTS sensor_readings (
@@ -40,6 +46,8 @@ class LocalDB:
             )
         ''')
 
+        print("Tabla de mediciones creada")
+
         self.conn.commit()
 
     def initDevice(self, id_device, model):
@@ -47,6 +55,7 @@ class LocalDB:
             '''INSERT INTO device_info (id_device, model, initialized) VALUES (?, ?, ?)''', 
             (id_device, model, True)
         )
+        print("Datos de fábrica del dispositivo añadidos")
         self.conn.commit()
     
     def initSensor(self, id_sensor, sensor_name_model, unit_measurement):
@@ -54,11 +63,13 @@ class LocalDB:
             '''INSERT INTO sensors (id_sensor, sensor_name_model, unit_measurement) VALUES (?, ?, ?)''', 
             (id_sensor, sensor_name_model, unit_measurement)
         )
+        print(f"Datos de fábrica del sensor '{sensor_name_model}' añadidos")
         self.conn.commit()
     
     def getDeviceInfo(self):
         self.cursor.execute('''SELECT * FROM device_info''')
         data = self.cursor.fetchall()
+        print(f"Datos del dispositivo obtenidos: {data[0]}")
         return data[0] if data else None
     
     def getSensor(self, sensor_name_model):
@@ -66,6 +77,7 @@ class LocalDB:
             '''SELECT * FROM sensors WHERE sensor_name_model = ?''', (sensor_name_model,)
         )
         data = self.cursor.fetchall()
+        print(f"Datos del sensor obtenidos: {data[0]}")
         return data[0] if data else None
     
     def sinchronizeDevice(self, id_device, id_user):
@@ -73,13 +85,16 @@ class LocalDB:
             '''UPDATE device_info SET id_user = ?, synchronized = true WHERE id_device = ?''', 
             (id_user, id_device)
         )
+        print(f"Dispositivo sincronizado con el usuario: {id_user}")
         self.conn.commit()
 
     def createSensorReading(self, value, id_sensor):
         self.cursor.execute(
             '''INSERT INTO sensor_readings (value, id_sensor) VALUES (?, ?)''', (value, id_sensor)
         )
+        print(f"Medición del sensor '{id_sensor}' registrado: {value}")
         self.conn.commit()
 
     def closeDB(self):
+        print("Cerrando conexión con la bd")
         self.conn.close()
