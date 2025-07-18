@@ -45,6 +45,8 @@ def GetSensorsData (analogicSensors, digitalSensors, dbManager, publisher):
 
         try:
             publisher.publishMessage("websocket_topic.many_readings", messageSensorReadings)
+            print("Datos enviados al websocket")
             publisher.publishMessage("db_topic", sensorReadingsList)
+            print("Datos enviados a la Base de datos")
         except Exception as e:
             print("")
