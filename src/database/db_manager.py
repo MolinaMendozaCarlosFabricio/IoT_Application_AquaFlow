@@ -42,6 +42,7 @@ class LocalDB:
                 value REAL,
                 timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
                 id_sensor INTEGER,
+                backed BOOLEAN,
                 FOREIGN KEY (id_sensor) REFERENCES sensors(id_sensor) ON DELETE CASCADE
             )
         ''')
@@ -94,6 +95,14 @@ class LocalDB:
         )
         print(f"Medición del sensor '{id_sensor}' registrado: {value}")
         self.conn.commit()
+    
+    def getSensorReadingsNotSent(self):
+        self.cursor.execute(
+            '''SELECT * FROM sensor_readings WHERE backed = false'''
+        )
+        data = self.cursor.fetchall()
+        print(f"Mediciones sin enviar: {data}")
+        return data
 
     def closeDB(self):
         print("Cerrando conexión con la bd")
