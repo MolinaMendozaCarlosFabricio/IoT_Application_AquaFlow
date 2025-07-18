@@ -1,4 +1,5 @@
 import pika
+import json
 
 class PublisherAMQP:
     def __init__(self, config):
@@ -9,7 +10,11 @@ class PublisherAMQP:
     
     def publishMessage(self, routing_key, message):
         print(f"Publicando mensaje en el tópico {routing_key}: {message}")
-        self.__channel.basic_publish(exchange=self.__exchange, routing_key=routing_key, body=message)
+        self.__channel.basic_publish(
+            exchange=self.__exchange, 
+            routing_key=routing_key, 
+            body=json.dumps(message)
+        )
         print("Mensaje publicado!")
     
     def closeConnection(self):
