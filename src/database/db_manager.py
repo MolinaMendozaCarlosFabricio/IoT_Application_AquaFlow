@@ -89,9 +89,9 @@ class LocalDB:
         print(f"Dispositivo sincronizado con el usuario: {id_user}")
         self.conn.commit()
 
-    def createSensorReading(self, value, id_sensor):
+    def createSensorReading(self, value, id_sensor, backed):
         self.cursor.execute(
-            '''INSERT INTO sensor_readings (value, id_sensor) VALUES (?, ?)''', (value, id_sensor)
+            '''INSERT INTO sensor_readings (value, id_sensor, backed) VALUES (?, ?, ?)''', (value, id_sensor, backed)
         )
         print(f"Medición del sensor '{id_sensor}' registrado: {value}")
         self.conn.commit()
