@@ -48,5 +48,20 @@ def GetSensorsData (analogicSensors, digitalSensors, dbManager, publisher):
             print("Datos enviados al websocket")
             publisher.publishMessage("db_topic", sensorReadingsList)
             print("Datos enviados a la Base de datos")
+            dbManager.createSensorReading(tempReading["value"], tempReading["id_sensor"], True)
+            dbManager.createSensorReading(tdsReading["value"], tdsReading["id_sensor"], True)
+            dbManager.createSensorReading(pHReading["value"], pHReading["id_sensor"], True)
+            dbManager.createSensorReading(turbidityReading["value"], turbidityReading["id_sensor"], True)
+            print("Lecturas guardadas de manera local")
         except Exception as e:
-            print("")
+            print("Error al mandar datos por amqp:", e)
+            dbManager.createSensorReading(tempReading["value"], tempReading["id_sensor"], False)
+            dbManager.createSensorReading(tdsReading["value"], tdsReading["id_sensor"], False)
+            dbManager.createSensorReading(pHReading["value"], pHReading["id_sensor"], False)
+            dbManager.createSensorReading(turbidityReading["value"], turbidityReading["id_sensor"], False)
+            print("Datos guardados de manera local")
+        
+        return valueTempSensor, valueTdsSensor, valueTurbiditySensor, valuepHSensor
+    else:
+        print("Error en la toma de lecturas")
+        return False
