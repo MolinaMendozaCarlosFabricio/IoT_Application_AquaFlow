@@ -71,7 +71,7 @@ class LocalDB:
         self.cursor.execute('''SELECT * FROM device_info''')
         data = self.cursor.fetchall()
         print(f"Datos del dispositivo obtenidos: {data[0]}")
-        return data[0] if data else None
+        return dict(data[0]) if data else None
     
     def getSensor(self, sensor_name_model):
         self.cursor.execute(
@@ -79,7 +79,7 @@ class LocalDB:
         )
         data = self.cursor.fetchall()
         print(f"Datos del sensor obtenidos: {data[0]}")
-        return data[0] if data else None
+        return dict(data[0]) if data else None
     
     def sinchronizeDevice(self, id_device, id_user):
         self.cursor.execute(
@@ -102,7 +102,7 @@ class LocalDB:
         )
         data = self.cursor.fetchall()
         print(f"Mediciones sin enviar: {data}")
-        return data
+        return [dict(row) for row in data]
 
     def closeDB(self):
         print("Cerrando conexión con la bd")
