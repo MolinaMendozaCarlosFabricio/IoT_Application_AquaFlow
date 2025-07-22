@@ -14,7 +14,7 @@ class LocalDB:
         self.cursor.execute('''
             CREATE TABLE IF NOT EXISTS device_info (
                 id_device TEXT PRIMARY KEY,
-                id_user INTEGER DEFAULT(null),
+                id_user TEXT DEFAULT(null),
                 model TEXT,
                 created_at DATE DEFAULT CURRENT_TIMESTAMP,
                 initialized BOOLEAN DEFAULT(false),
