@@ -26,7 +26,7 @@ class LocalDB:
 
         self.cursor.execute('''
             CREATE TABLE IF NOT EXISTS sensors (
-                id_sensor INTEGER PRIMARY KEY,
+                id_sensor TEXT PRIMARY KEY,
                 id_device TEXT,
                 sensor_name_model TEXT,
                 unit_measurement TEXT,
@@ -41,7 +41,7 @@ class LocalDB:
                 id_sensor_reading INTEGER PRIMARY KEY AUTOINCREMENT,
                 value REAL,
                 timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
-                id_sensor INTEGER,
+                id_sensor TEXT,
                 backed BOOLEAN,
                 FOREIGN KEY (id_sensor) REFERENCES sensors(id_sensor) ON DELETE CASCADE
             )
