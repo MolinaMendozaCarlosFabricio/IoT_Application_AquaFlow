@@ -6,7 +6,7 @@ class PublisherAMQP:
         self.__connection = pika.BlockingConnection(pika.ConnectionParameters(host=config.getAMQPURL()))
         self.__channel = self.__connection.channel()
         self.__exchange = config.getExchange()
-        self.__channel.exchange_declare(exchange=self.__exchange, exchange_type='topic')
+        self.__channel.exchange_declare(exchange=self.__exchange, exchange_type='topic', durable=True)
     
     def publishMessage(self, routing_key, message):
         print(f"Publicando mensaje en el tópico {routing_key}: {message}")
