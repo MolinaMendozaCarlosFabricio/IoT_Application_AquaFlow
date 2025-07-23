@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime
 
 def GetSensorsData (analogicSensors, digitalSensors, dbManager, publisher):
     deviceInfo = dbManager.getDeviceInfo()
@@ -11,9 +11,8 @@ def GetSensorsData (analogicSensors, digitalSensors, dbManager, publisher):
     valuepHSensor, valueTdsSensor, valueTurbiditySensor, e = analogicSensors.getAnalogicSensorReadings()
 
     if e != None or deviceInfo["synchronized"]:
-        timestamp = 1721746530
-        dt = datetime.utcfromtimestamp(timestamp)
-        iso_string = dt.isoformat() + 'Z'
+        now = datetime.now()
+        iso_string = now.isoformat() + 'Z'
         tempReading = {
             "id": 0,
             "value": valueTempSensor,
