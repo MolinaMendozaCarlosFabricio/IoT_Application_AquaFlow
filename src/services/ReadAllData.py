@@ -15,25 +15,25 @@ def GetSensorsData (analogicSensors, digitalSensors, dbManager, publisher):
             "id": 0,
             "value": valueTempSensor,
             "timestamp": "",
-            "id_sensor": tempSensorInfo["id_sensor"]
+            "sensor_id": tempSensorInfo["id_sensor"]
         }
         tdsReading = {
             "id": 0,
             "value": valueTdsSensor,
             "timestamp": "",
-            "id_sensor": tdsSensorInfo["id_sensor"]
+            "sensor_id": tdsSensorInfo["id_sensor"]
         }
         pHReading = {
             "id": 0,
             "value": valuepHSensor,
             "timestamp": "",
-            "id_sensor": pHSensorInfo["id_sensor"]
+            "sensor_id": pHSensorInfo["id_sensor"]
         }
         turbidityReading = {
             "id": 0,
             "value": valueTurbiditySensor,
             "timestamp": "",
-            "id_sensor": turbiditySensorInfor["id_sensor"]
+            "sensor_id": turbiditySensorInfor["id_sensor"]
         }
 
         sensorReadingsList = [pHReading, tdsReading, tempReading, turbidityReading]
