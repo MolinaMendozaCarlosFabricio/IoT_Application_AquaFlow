@@ -103,6 +103,13 @@ class LocalDB:
         data = self.cursor.fetchall()
         print(f"Mediciones sin enviar: {data}")
         return [dict(row) for row in data]
+    
+    def markSensorReadingSent(self, id):
+        self.cursor.execute(
+            '''UPDATE sensor_readings SET backed = true WHERE id_sensor_reading = ?''', (id,)
+        )
+        print(f"Medición marcada como respaldada: {id}")
+        self.conn.commit()
 
     def closeDB(self):
         print("Cerrando conexión con la bd")
