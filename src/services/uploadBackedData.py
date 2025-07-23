@@ -1,3 +1,5 @@
+import time
+
 def BackupSensorReadings(dbManager, publisher):
     readings_dont_sent = dbManager.getSensorReadingsNotSent()
     if len(readings_dont_sent) > 0:
@@ -14,5 +16,6 @@ def BackupSensorReadings(dbManager, publisher):
                 dbManager.markSensorReadingSent(reading_to_send[0]["id"])
             except Exception as e:
                 print("No fue posible respaldar los datos, intentar más tarde:", e)
+            time.sleep(3)
     else:
         print("Sin datos qué respaldar")
