@@ -1,4 +1,4 @@
-import time
+import datetime
 
 def GetSensorsData (analogicSensors, digitalSensors, dbManager, publisher):
     deviceInfo = dbManager.getDeviceInfo()
@@ -11,28 +11,31 @@ def GetSensorsData (analogicSensors, digitalSensors, dbManager, publisher):
     valuepHSensor, valueTdsSensor, valueTurbiditySensor, e = analogicSensors.getAnalogicSensorReadings()
 
     if e != None or deviceInfo["synchronized"]:
+        timestamp = 1721746530
+        dt = datetime.utcfromtimestamp(timestamp)
+        iso_string = dt.isoformat() + 'Z'
         tempReading = {
             "id": 0,
             "value": valueTempSensor,
-            "timestamp": "",
+            "date": iso_string,
             "sensor_id": tempSensorInfo["id_sensor"]
         }
         tdsReading = {
             "id": 0,
             "value": valueTdsSensor,
-            "timestamp": "",
+            "date": iso_string,
             "sensor_id": tdsSensorInfo["id_sensor"]
         }
         pHReading = {
             "id": 0,
             "value": valuepHSensor,
-            "timestamp": "",
+            "date": iso_string,
             "sensor_id": pHSensorInfo["id_sensor"]
         }
         turbidityReading = {
             "id": 0,
             "value": valueTurbiditySensor,
-            "timestamp": "",
+            "date": iso_string,
             "sensor_id": turbiditySensorInfor["id_sensor"]
         }
 
@@ -48,17 +51,17 @@ def GetSensorsData (analogicSensors, digitalSensors, dbManager, publisher):
             print("Datos enviados al websocket")
             publisher.publishMessage(".measurements", sensorReadingsList)
             print("Datos enviados a la Base de datos")
-            dbManager.createSensorReading(tempReading["value"], tempReading["id_sensor"], True)
-            dbManager.createSensorReading(tdsReading["value"], tdsReading["id_sensor"], True)
-            dbManager.createSensorReading(pHReading["value"], pHReading["id_sensor"], True)
-            dbManager.createSensorReading(turbidityReading["value"], turbidityReading["id_sensor"], True)
+            dbManager.createSensorReading(tempReading["value"], tempReading["sensor_id"], True)
+            dbManager.createSensorReading(tdsReading["value"], tdsReading["sensor_id"], True)
+            dbManager.createSensorReading(pHReading["value"], pHReading["sensor_id"], True)
+            dbManager.createSensorReading(turbidityReading["value"], turbidityReading["sensor_id"], True)
             print("Lecturas guardadas de manera local")
         except Exception as e:
             print("Error al mandar datos por amqp:", e)
-            dbManager.createSensorReading(tempReading["value"], tempReading["id_sensor"], False)
-            dbManager.createSensorReading(tdsReading["value"], tdsReading["id_sensor"], False)
-            dbManager.createSensorReading(pHReading["value"], pHReading["id_sensor"], False)
-            dbManager.createSensorReading(turbidityReading["value"], turbidityReading["id_sensor"], False)
+            dbManager.createSensorReading(tempReading["value"], tempReading["sensor_id"], False)
+            dbManager.createSensorReading(tdsReading["value"], tdsReading["sensor_id"], False)
+            dbManager.createSensorReading(pHReading["value"], pHReading["sensor_id"], False)
+            dbManager.createSensorReading(turbidityReading["value"], turbidityReading["sensor_id"], False)
             print("Datos guardados de manera local")
         
         return valueTempSensor, valueTdsSensor, valueTurbiditySensor, valuepHSensor
