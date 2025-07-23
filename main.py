@@ -7,21 +7,47 @@ from config import Config
 from src.index import Loop
 import threading
 
+# Iniciar configuración con dotenv
 try:
     configManager = Config()
     print("Configuración Obtenida")
+except Exception as e:
+    print("Error al obtener configuración:", e)
+
+# Iniciar base de datos local
+try:
     dbManager = LocalDB()
     print("Base de datos iniciada")
+except Exception as e:
+    print("Error al iniciar base de datos:", e)
+
+# Conectar con RabbitMQ
+try:
     amqpManager = PublisherAMQP(configManager)
     print("Conexión AMQP establecida")
+except Exception as e:
+    print("Error al conectarse con servidor AMQP:", e)
+
+# Conectar con sensores digitales
+try:
     digitalSensorManager = DigitalSensors()
     print("Sensores Digitales inicializados")
+except:
+    print("Error al conectar con los sensores digitales:", e)
+
+# Conectar con sensores analógicos
+try:
     analogicSensorManager = AnalogicSensors()
     print("Sensores analógicos inicializados")
+except Exception as e:
+    print("Error al conectar con los sensores analógicos:", e)
+
+# Iniciar vista principal
+try:
     mainView = MainView()
     print("Vista inicializada")
 except Exception as e:
-    print("Error al iniciar dependencias:", e)
+    print("Error al iniciar vista:", e)
 
 runing = True
 deviceInfo = dbManager.getDeviceInfo()
