@@ -8,7 +8,7 @@ def GetSensorsData (analogicSensors, digitalSensors, dbManager, publisher):
     turbiditySensorInfor = dbManager.getSensor('turbiditySensor')
 
     valueTempSensor = digitalSensors.read_temp()
-    valueTdsSensor, valuepHSensor, valueTurbiditySensor, e = analogicSensors.getAnalogicSensorReadings()
+    valuepHSensor, valueTdsSensor, valueTurbiditySensor, e = analogicSensors.getAnalogicSensorReadings()
 
     if not e != None:
         tempReading = {
