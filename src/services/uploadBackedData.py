@@ -11,7 +11,7 @@ def BackupSensorReadings(dbManager, publisher):
             try:
                 publisher.publishMessage(".measurements", reading_to_send)
                 print("Datos respaldados:", reading_to_send)
-                dbManager.markSensorReadingSent(reading_to_send["id"])
+                dbManager.markSensorReadingSent(reading_to_send[0]["id"])
             except Exception as e:
                 print("No fue posible respaldar los datos, intentar más tarde:", e)
     else:
