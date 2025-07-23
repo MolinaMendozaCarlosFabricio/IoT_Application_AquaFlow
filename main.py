@@ -13,6 +13,7 @@ try:
     print("Configuración Obtenida")
 except Exception as e:
     print("Error al obtener configuración:", e)
+    configManager = None
 
 # Iniciar base de datos local
 try:
@@ -20,6 +21,7 @@ try:
     print("Base de datos iniciada")
 except Exception as e:
     print("Error al iniciar base de datos:", e)
+    dbManager = None
 
 # Conectar con RabbitMQ
 try:
@@ -27,6 +29,7 @@ try:
     print("Conexión AMQP establecida")
 except Exception as e:
     print("Error al conectarse con servidor AMQP:", e)
+    amqpManager = None
 
 # Conectar con sensores digitales
 try:
@@ -34,6 +37,7 @@ try:
     print("Sensores Digitales inicializados")
 except:
     print("Error al conectar con los sensores digitales:", e)
+    digitalSensorManager = None
 
 # Conectar con sensores analógicos
 try:
@@ -41,6 +45,7 @@ try:
     print("Sensores analógicos inicializados")
 except Exception as e:
     print("Error al conectar con los sensores analógicos:", e)
+    analogicSensorManager = None
 
 # Iniciar vista principal
 try:
