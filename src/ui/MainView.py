@@ -20,7 +20,7 @@ class MainView(tk.Tk):
         self.temp_raw = ttk.Label(self, text="Temperatura (C°): 0°")
         self.temp_raw.pack()
 
-        self.boton = ttk.Button(self, text="Cerrar programa", command=self.__closeProgram())
+        self.boton = ttk.Button(self, text="Cerrar programa", command=self.__closeProgram)
         self.boton.pack(pady=20)
     
     def showMeasurements(self, turbidity, tds, ph, temp):

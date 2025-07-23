@@ -1,4 +1,4 @@
-import time
+from datetime import datetime
 
 def GetSensorsData (analogicSensors, digitalSensors, dbManager, publisher):
     deviceInfo = dbManager.getDeviceInfo()
@@ -8,32 +8,34 @@ def GetSensorsData (analogicSensors, digitalSensors, dbManager, publisher):
     turbiditySensorInfor = dbManager.getSensor('turbiditySensor')
 
     valueTempSensor = digitalSensors.read_temp()
-    valueTdsSensor, valuepHSensor, valueTurbiditySensor, e = analogicSensors.getAnalogicSensorReadings()
+    valuepHSensor, valueTdsSensor, valueTurbiditySensor, e = analogicSensors.getAnalogicSensorReadings()
 
-    if not e != None:
+    if e != None or deviceInfo["synchronized"]:
+        now = datetime.now()
+        iso_string = now.isoformat() + 'Z'
         tempReading = {
             "id": 0,
             "value": valueTempSensor,
-            "timestamp": "",
-            "id_sensor": tempSensorInfo["id_sensor"]
+            "date": iso_string,
+            "sensor_id": tempSensorInfo["id_sensor"]
         }
         tdsReading = {
             "id": 0,
             "value": valueTdsSensor,
-            "timestamp": "",
-            "id_sensor": tdsSensorInfo["id_sensor"]
+            "date": iso_string,
+            "sensor_id": tdsSensorInfo["id_sensor"]
         }
         pHReading = {
             "id": 0,
             "value": valuepHSensor,
-            "timestamp": "",
-            "id_sensor": pHSensorInfo["id_sensor"]
+            "date": iso_string,
+            "sensor_id": pHSensorInfo["id_sensor"]
         }
         turbidityReading = {
             "id": 0,
             "value": valueTurbiditySensor,
-            "timestamp": "",
-            "id_sensor": turbiditySensorInfor["id_sensor"]
+            "date": iso_string,
+            "sensor_id": turbiditySensorInfor["id_sensor"]
         }
 
         sensorReadingsList = [pHReading, tdsReading, tempReading, turbidityReading]
@@ -46,19 +48,19 @@ def GetSensorsData (analogicSensors, digitalSensors, dbManager, publisher):
         try:
             publisher.publishMessage("websocket_topic.many_readings", messageSensorReadings)
             print("Datos enviados al websocket")
-            publisher.publishMessage("db_topic", sensorReadingsList)
+            publisher.publishMessage(".measurements", sensorReadingsList)
             print("Datos enviados a la Base de datos")
-            dbManager.createSensorReading(tempReading["value"], tempReading["id_sensor"], True)
-            dbManager.createSensorReading(tdsReading["value"], tdsReading["id_sensor"], True)
-            dbManager.createSensorReading(pHReading["value"], pHReading["id_sensor"], True)
-            dbManager.createSensorReading(turbidityReading["value"], turbidityReading["id_sensor"], True)
+            dbManager.createSensorReading(tempReading["value"], tempReading["sensor_id"], True)
+            dbManager.createSensorReading(tdsReading["value"], tdsReading["sensor_id"], True)
+            dbManager.createSensorReading(pHReading["value"], pHReading["sensor_id"], True)
+            dbManager.createSensorReading(turbidityReading["value"], turbidityReading["sensor_id"], True)
             print("Lecturas guardadas de manera local")
         except Exception as e:
             print("Error al mandar datos por amqp:", e)
-            dbManager.createSensorReading(tempReading["value"], tempReading["id_sensor"], False)
-            dbManager.createSensorReading(tdsReading["value"], tdsReading["id_sensor"], False)
-            dbManager.createSensorReading(pHReading["value"], pHReading["id_sensor"], False)
-            dbManager.createSensorReading(turbidityReading["value"], turbidityReading["id_sensor"], False)
+            dbManager.createSensorReading(tempReading["value"], tempReading["sensor_id"], False)
+            dbManager.createSensorReading(tdsReading["value"], tdsReading["sensor_id"], False)
+            dbManager.createSensorReading(pHReading["value"], pHReading["sensor_id"], False)
+            dbManager.createSensorReading(turbidityReading["value"], turbidityReading["sensor_id"], False)
             print("Datos guardados de manera local")
         
         return valueTempSensor, valueTdsSensor, valueTurbiditySensor, valuepHSensor
