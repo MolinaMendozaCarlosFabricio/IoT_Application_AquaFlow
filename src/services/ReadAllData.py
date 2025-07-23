@@ -46,8 +46,7 @@ def GetSensorsData (analogicSensors, digitalSensors, dbManager, publisher):
         try:
             publisher.publishMessage("websocket_topic.many_readings", messageSensorReadings)
             print("Datos enviados al websocket")
-            publisher.publishMessage(".measurements" \
-            "", sensorReadingsList)
+            publisher.publishMessage(".measurements", sensorReadingsList)
             print("Datos enviados a la Base de datos")
             dbManager.createSensorReading(tempReading["value"], tempReading["id_sensor"], True)
             dbManager.createSensorReading(tdsReading["value"], tdsReading["id_sensor"], True)
