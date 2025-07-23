@@ -60,9 +60,8 @@ def main():
     amqpManager.closeConnection()
 
 def system_loop(analogicSensorManager, digitalSensorManager, dbManager, amqpManager, mainView):
-    while runing:
+    while mainView.verifyRunning():
         Loop(analogicSensorManager, digitalSensorManager, dbManager, amqpManager, mainView)
-        runing = mainView.verifyRunning()
 
 if __name__ == "__main__":
     main()
