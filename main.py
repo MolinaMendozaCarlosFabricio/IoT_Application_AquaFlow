@@ -50,7 +50,6 @@ except Exception as e:
     print("Error al iniciar vista:", e)
 
 runing = True
-deviceInfo = dbManager.getDeviceInfo()
 hilo_ui = threading.Thread(target=mainView.mainloop)
 hilo_ui.daemon = True
 hilo_ui.start()

@@ -10,7 +10,7 @@ def GetSensorsData (analogicSensors, digitalSensors, dbManager, publisher):
     valueTempSensor = digitalSensors.read_temp()
     valuepHSensor, valueTdsSensor, valueTurbiditySensor, e = analogicSensors.getAnalogicSensorReadings()
 
-    if not e != None:
+    if e != None or deviceInfo["synchronized"]:
         tempReading = {
             "id": 0,
             "value": valueTempSensor,
