@@ -6,7 +6,7 @@ class MainView(tk.Tk):
         super().__init__()
         self.__is_running = True
         self.title("AquaFlow System Device")
-        self.geometry("300x200")
+        self.geometry("500x400")
 
         self.turbidiy_raw = ttk.Label(self, text="Turbidez (NTU): 0 NTU")
         self.turbidiy_raw.pack()
