@@ -10,4 +10,4 @@ def Loop(analogicSensors, digitalSensors, dbManager, publisher, mainView):
     mainView.showMeasurements(valueTurbiditySensor, valueTdsSensor, valuepHSensor, valueTempSensor)
     
     # Lo último que se debe de ejecutar
-    time.sleep(10)
+    time.sleep(4)
