@@ -44,7 +44,7 @@ def main():
         analogicSensorManager = None
 
     try:
-        mainView = MainView()
+        mainView = MainView(dbManager)
         print("Vista inicializada")
     except Exception as e:
         print("Error al iniciar vista:", e)

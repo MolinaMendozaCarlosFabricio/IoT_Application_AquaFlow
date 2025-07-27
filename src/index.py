@@ -1,5 +1,6 @@
 from src.services.ReadAllData import GetSensorsData
 from src.services.uploadBackedData import BackupSensorReadings
+from src.services.ShowActivities import CalculateWaterActivities
 import time
 
 def Loop(analogicSensors, digitalSensors, dbManager, publisher, mainView):
@@ -8,6 +9,8 @@ def Loop(analogicSensors, digitalSensors, dbManager, publisher, mainView):
         analogicSensors, digitalSensors, dbManager, publisher
     )
     mainView.showMeasurements(valueTurbiditySensor, valueTdsSensor, valuepHSensor, valueTempSensor)
-    
+
+    activities = CalculateWaterActivities(valuepHSensor, valueTdsSensor, valueTurbiditySensor, valueTempSensor)
+    mainView.showActivities(activities)
     # Lo último que se debe de ejecutar
     time.sleep(4)
