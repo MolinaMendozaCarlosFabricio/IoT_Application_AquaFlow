@@ -1,6 +1,11 @@
-def CalculateWaterActivities(ph, tds, ntu, amqpManager):
+def CalculateWaterActivities(ph, tds, ntu, amqpManager, dbManager):
     print("Mandando actividades del agua")
-    activities = []
+    deviceInfo = dbManager.getDeviceInfo()
+    activities = {
+        "user_id": deviceInfo["id_user"],
+        "filtrer_id": deviceInfo["id_device"],
+        "water_activities_list": []
+    }
 
     # Riego de plantas
     if ntu <= 20.0 and tds <= 1500 and ph > 6 and ph < 9:
@@ -21,7 +26,7 @@ def CalculateWaterActivities(ph, tds, ntu, amqpManager):
         ph_p = (calculate_ph/1.5) * 100
 
         p = (ntu_p + tds_p + ph_p) / 3
-        activities.append({
+        activities["water_activities_list"].append({
             "water_activity": "Riego de plantas",
             "percentage": p,
         })
@@ -46,7 +51,7 @@ def CalculateWaterActivities(ph, tds, ntu, amqpManager):
         ph_p = (calculate_ph/2) * 100 
 
         p = (ntu_p + tds_p + ph_p) / 3
-        activities.append({
+        activities["water_activities_list"].append({
             "water_activity": "Lavar auto",
             "percentage": p,
         })
@@ -71,7 +76,7 @@ def CalculateWaterActivities(ph, tds, ntu, amqpManager):
         ph_p = (calculate_ph/2) * 100 
 
         p = (ntu_p + tds_p + ph_p) / 3
-        activities.append({
+        activities["water_activities_list"].append({
             "water_activity": "Limpieza del hogar (pisos y exteriores)",
             "percentage": p,
         })
@@ -96,7 +101,7 @@ def CalculateWaterActivities(ph, tds, ntu, amqpManager):
         ph_p = (calculate_ph/1.5) * 100 
 
         p = (ntu_p + tds_p + ph_p) / 3
-        activities.append({
+        activities["water_activities_list"].append({
             "water_activity": "Lavado de ropa",
             "percentage": p,
         })
@@ -121,7 +126,7 @@ def CalculateWaterActivities(ph, tds, ntu, amqpManager):
         ph_p = (calculate_ph/2.25) * 100 
 
         p = (ntu_p + tds_p + ph_p) / 3
-        activities.append({
+        activities["water_activities_list"].append({
             "water_activity": "Descarga de inodoros",
             "percentage": p,
         })
@@ -146,7 +151,7 @@ def CalculateWaterActivities(ph, tds, ntu, amqpManager):
         ph_p = (calculate_ph/2) * 100 
 
         p = (ntu_p + tds_p + ph_p) / 3
-        activities.append({
+        activities["water_activities_list"].append({
             "water_activity": "Lavado de calles o banquetas",
             "percentage": p,
         })
