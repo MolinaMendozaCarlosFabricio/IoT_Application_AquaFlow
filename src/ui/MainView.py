@@ -41,7 +41,7 @@ class MainView(tk.Tk):
     def showActivities(self, activities):
         def update_listbox():
             self.activities_listbox.delete(0, tk.END)  # Limpiar lista anterior
-            for activity in activities:
+            for activity in activities["water_activities_list"]:
                 formatted = f"{activity['water_activity']} - {activity['percentage']}%"
                 self.activities_listbox.insert(tk.END, formatted)
         self.after(0, update_listbox)
