@@ -10,7 +10,7 @@ def Loop(analogicSensors, digitalSensors, dbManager, publisher, mainView):
     )
     mainView.showMeasurements(valueTurbiditySensor, valueTdsSensor, valuepHSensor, valueTempSensor)
 
-    activities = CalculateWaterActivities(valuepHSensor, valueTdsSensor, valueTurbiditySensor, valueTempSensor)
+    activities = CalculateWaterActivities(valuepHSensor, valueTdsSensor, valueTurbiditySensor, publisher)
     mainView.showActivities(activities)
     # Lo último que se debe de ejecutar
     time.sleep(4)
