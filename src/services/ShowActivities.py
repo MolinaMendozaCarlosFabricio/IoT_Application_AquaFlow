@@ -1,4 +1,5 @@
 def CalculateWaterActivities(ph, tds, ntu, amqpManager):
+    print("Mandando actividades del agua")
     activities = []
 
     # Riego de plantas
@@ -24,6 +25,7 @@ def CalculateWaterActivities(ph, tds, ntu, amqpManager):
             "water_activity": "Riego de plantas",
             "percentage": p,
         })
+        print("Agregando actividad: Riego de plantas")
     
     # Lavar el coche
     if ntu <= 40.0 and tds <= 1200 and ph > 5.5 and ph < 9.5:
@@ -48,6 +50,7 @@ def CalculateWaterActivities(ph, tds, ntu, amqpManager):
             "water_activity": "Lavar auto",
             "percentage": p,
         })
+        print("Agregando actividad: Lavado de coche")
     
     # Limpieza del hogar
     if ntu <= 60.0 and tds <= 1500 and ph > 5.5 and ph < 9.5:
@@ -72,6 +75,7 @@ def CalculateWaterActivities(ph, tds, ntu, amqpManager):
             "water_activity": "Limpieza del hogar (pisos y exteriores)",
             "percentage": p,
         })
+        print("Agregando actividad: Limpieza del hogar")
     
     # Lavado de ropa
     if ntu <= 20.0 and tds <= 800 and ph > 6 and ph < 9:
@@ -96,6 +100,7 @@ def CalculateWaterActivities(ph, tds, ntu, amqpManager):
             "water_activity": "Lavado de ropa",
             "percentage": p,
         })
+        print("Agregando actividad: Lavado de ropa")
 
     # Descarga de inodoros
     if ntu <= 100.0 and tds <= 3000 and ph > 5.0 and ph < 9.5:
@@ -120,6 +125,7 @@ def CalculateWaterActivities(ph, tds, ntu, amqpManager):
             "water_activity": "Descarga de inodoros",
             "percentage": p,
         })
+        print("Agregando actividad: Descarga del inodoro")
 
     # Lavado de calles o banquetas
     if ntu <= 200.0 and tds <= 1500 and ph > 5.5 and ph < 9.5:
@@ -144,11 +150,12 @@ def CalculateWaterActivities(ph, tds, ntu, amqpManager):
             "water_activity": "Lavado de calles o banquetas",
             "percentage": p,
         })
+        print("Agregando actividad: Lavado de banquetas")
 
-        try:
-            amqpManager.publishMessage("websocket_topic.water_activities", activities)
-            print("Enviando actividades con el agua")
-        except Exception as e:
-            print("Error al mandar actividades del agua por amqp:", e)
+    try:
+        amqpManager.publishMessage("websocket_topic.water_activities", activities)
+        print("Enviando actividades con el agua")
+    except Exception as e:
+        print("Error al mandar actividades del agua por amqp:", e)
         
-        return activities
+    return activities
