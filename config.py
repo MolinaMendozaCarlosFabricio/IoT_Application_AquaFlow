@@ -1,6 +1,7 @@
 import os
 from dotenv import load_dotenv
 
+# Carga las variables de entrno
 class Config:
     def __init__(self):
         load_dotenv()

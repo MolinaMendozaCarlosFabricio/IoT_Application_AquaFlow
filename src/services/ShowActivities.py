@@ -1,6 +1,8 @@
 def CalculateWaterActivities(ph, tds, ntu, amqpManager, dbManager):
     print("Mandando actividades del agua")
+    # Obtiene info del dispositivos
     deviceInfo = dbManager.getDeviceInfo()
+    # Arma un diccionario
     activities = {
         "user_id": deviceInfo["id_user"],
         "filtrer_id": deviceInfo["id_device"],
@@ -9,8 +11,9 @@ def CalculateWaterActivities(ph, tds, ntu, amqpManager, dbManager):
         ]
     }
 
+    # Calcula las actividades
     # Riego de plantas
-    calculate_ntu = 20.0 - ph
+    calculate_ntu = 20.0 - ntu
     if calculate_ntu < 0:
         calculate_ntu = 0
     calculate_tds = 1500 - tds
@@ -33,7 +36,7 @@ def CalculateWaterActivities(ph, tds, ntu, amqpManager, dbManager):
     })
 
     # Lavar el coche
-    calculate_ntu = 40.0 - ph
+    calculate_ntu = 40.0 - ntu
     if calculate_ntu < 0:
         calculate_ntu = 0
     calculate_tds = 1200 - tds
@@ -56,7 +59,7 @@ def CalculateWaterActivities(ph, tds, ntu, amqpManager, dbManager):
     })
     
     # Limpieza del hogar
-    calculate_ntu = 60.0 - ph
+    calculate_ntu = 60.0 - ntu
     if calculate_ntu < 0:
         calculate_ntu = 0
     calculate_tds = 1500 - tds
@@ -79,7 +82,7 @@ def CalculateWaterActivities(ph, tds, ntu, amqpManager, dbManager):
     })
     
     # Lavado de ropa
-    calculate_ntu = 20.0 - ph
+    calculate_ntu = 20.0 - ntu
     if calculate_ntu < 0:
         calculate_ntu = 0
     calculate_tds = 800 - tds
@@ -103,7 +106,7 @@ def CalculateWaterActivities(ph, tds, ntu, amqpManager, dbManager):
     })
     
     # Descarga de inodoros
-    calculate_ntu = 100.0 - ph
+    calculate_ntu = 100.0 - ntu
     if calculate_ntu < 0:
         calculate_ntu = 0
     calculate_tds = 3000 - tds
@@ -126,7 +129,7 @@ def CalculateWaterActivities(ph, tds, ntu, amqpManager, dbManager):
     })
 
     # Lavado de calles o banquetas
-    calculate_ntu = 200.0 - ph
+    calculate_ntu = 200.0 - ntu
     if calculate_ntu < 0:
         calculate_ntu = 0
     calculate_tds = 1500 - tds
@@ -148,6 +151,7 @@ def CalculateWaterActivities(ph, tds, ntu, amqpManager, dbManager):
         "percentage": p,
     })
     
+    # Intenta mandar las actividades por amqp
     try:
         amqpManager.publishMessage("websocket_topic.water_activities", activities)
         print("Enviando actividades con el agua")

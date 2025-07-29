@@ -4,6 +4,7 @@ import time
 
 class DigitalSensors:
     def __init__(self):
+        # Encuentra el directorio del sensor ds18b20
         base_dir = '/sys/bus/w1/devices/'
         device_folder = glob.glob(base_dir + '28*')[0]
         self.device_file = os.path.join(device_folder, 'w1_slave')
@@ -13,6 +14,7 @@ class DigitalSensors:
             lines = f.readlines()
         return lines
     
+    # Método para obtener lecturas del sensor ds18b20
     def read_temp(self):
         lines = self.__read_temp_raw()
         while lines[0].strip()[-3:] != 'YES':

@@ -4,6 +4,7 @@ from src.services.SynchronizeUser import SynchronizeUser
 
 class SinchronizeForm(tk.Toplevel):
     def __init__(self, dbManager):
+        # Vista para sincronizar dispositivo con usuario
         super().__init__()
         self.title("Sinchronize User Form - AquaFlow")
         self.geometry("300x400")
@@ -16,6 +17,7 @@ class SinchronizeForm(tk.Toplevel):
 
         tk.Button(self, text="Enviar", command=self.send_uid).grid(row=3, column=0, columnspan=2, pady=10)
 
+    # Método que almacena ID del usuario en el dispositivo
     def send_uid(self):
         SynchronizeUser(self.db_manager, self.user_id.get())
         messagebox.showinfo("Sincronizado", f"Sincronizado con el usuari: {self.user_id.get()}")
