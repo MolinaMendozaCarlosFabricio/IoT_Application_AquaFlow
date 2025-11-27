@@ -1,11 +1,9 @@
-def CalculateWaterActivities(ph, tds, ntu, amqpManager, dbManager):
+def CalculateWaterActivities(ph, tds, ntu, amqpManager, userConfig):
     print("Mandando actividades del agua")
-    # Obtiene info del dispositivos
-    deviceInfo = dbManager.getDeviceInfo()
     # Arma un diccionario
     activities = {
-        "user_id": deviceInfo["id_user"],
-        "filtrer_id": deviceInfo["id_device"],
+        "user_id": userConfig.userId,
+        "filtrer_id": userConfig.deviceId,
         "water_activities_list": [
             
         ]

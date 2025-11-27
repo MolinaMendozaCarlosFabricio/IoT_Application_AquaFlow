@@ -29,9 +29,6 @@ class MainView(tk.Tk):
         self.activities_listbox = tk.Listbox(self, height=8, width=60)
         self.activities_listbox.pack(pady=5)
 
-        self.sync_button = ttk.Button(self, text="Sincronizar usuario", command=self.open_sync_form)
-        self.sync_button.pack(pady=10)
-
     # Método para mostrar mediciones en la vista   
     def showMeasurements(self, turbidity, tds, ph, temp):
         self.after(0, lambda: self.turbidiy_raw.config(text=f"Turbidez (NTU): {turbidity} NTU"))
@@ -55,8 +52,3 @@ class MainView(tk.Tk):
     # Método para verificar ejecución
     def verifyRunning(self):
         return self.__is_running
-    
-    # Método para abrir vista de sincronización
-    def open_sync_form(self):
-        from src.ui.SinchronizeForm import SinchronizeForm
-        SinchronizeForm(self, self.dbManager)

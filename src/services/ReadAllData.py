@@ -1,6 +1,6 @@
 from datetime import datetime
 
-def GetSensorsData (analogicSensors, digitalSensors, dbManager, publisher):
+def GetSensorsData (analogicSensors, digitalSensors, dbManager, publisher, userConfig):
     # Obtiene información del dispositivo y sensores
     deviceInfo = dbManager.getDeviceInfo()
     tempSensorInfo = dbManager.getSensor('ds18b20')
@@ -12,7 +12,7 @@ def GetSensorsData (analogicSensors, digitalSensors, dbManager, publisher):
     valueTempSensor = digitalSensors.read_temp()
     valuepHSensor, valueTdsSensor, valueTurbiditySensor, e = analogicSensors.getAnalogicSensorReadings()
 
-    if e != None or deviceInfo["synchronized"]:
+    if e != None or userConfig.userId:
         # Obtiene timestamp (Fecha y hora)
         now = datetime.now()
         iso_string = now.isoformat() + 'Z'
@@ -21,31 +21,31 @@ def GetSensorsData (analogicSensors, digitalSensors, dbManager, publisher):
             "id": 0,
             "value": valueTempSensor,
             "date": iso_string,
-            "sensor_id": tempSensorInfo["id_sensor"]
+            "sensor_id": userConfig.sensorsInfo[0]["sensor_id"]
         }
         tdsReading = {
             "id": 0,
             "value": valueTdsSensor,
             "date": iso_string,
-            "sensor_id": tdsSensorInfo["id_sensor"]
+            "sensor_id": userConfig.sensorsInfo[1]["sensor_id"]
         }
         pHReading = {
             "id": 0,
             "value": valuepHSensor,
             "date": iso_string,
-            "sensor_id": pHSensorInfo["id_sensor"]
+            "sensor_id": userConfig.sensorsInfo[2]["sensor_id"]
         }
         turbidityReading = {
             "id": 0,
             "value": valueTurbiditySensor,
             "date": iso_string,
-            "sensor_id": turbiditySensorInfor["id_sensor"]
+            "sensor_id": userConfig.sensorsInfo[3]["sensor_id"]
         }
 
         sensorReadingsList = [pHReading, tdsReading, tempReading, turbidityReading]
         messageSensorReadings = {
-            "idUser": deviceInfo["id_user"],
-            "idFiltrer": deviceInfo["id_device"],
+            "idUser": userConfig.userId,
+            "idFiltrer": userConfig.deviceId,
             "sensorReadings": sensorReadingsList
         }
 

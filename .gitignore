@@ -17,3 +17,6 @@ venv/
 # Ignrar base de datos SQLite
 *.db
 *.db-journal
+
+# Config
+src/config/userConfig.json
