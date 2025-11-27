@@ -4,7 +4,9 @@ import threading
 
 class LocalDB:
     def __init__(self):
+        # Inicializa la base de datos con SQLite
         self.conn = sqlite3.connect('sensores.db', check_same_thread=False)
+        # Permite obtener los registros como diccionarios
         self.conn.row_factory = sqlite3.Row
         self.cursor = self.conn.cursor()
         self.lock = threading.Lock()
@@ -33,6 +35,7 @@ class LocalDB:
             print(f"Medición del sensor '{id_sensor}' registrado: {value}")
             self.conn.commit()
     
+    # Método para obtener lecturas
     def getSensorReadingsNotSent(self):
         with self.lock:
             self.cursor.execute(
@@ -42,6 +45,7 @@ class LocalDB:
             print(f"Mediciones sin enviar: {data}")
             return [dict(row) for row in data]
     
+    # Método para marcar lecturas como respaldadas
     def markSensorReadingSent(self, id):
         with self.lock:
             self.cursor.execute(
@@ -50,6 +54,7 @@ class LocalDB:
             print(f"Medición marcada como respaldada: {id}")
             self.conn.commit()
 
+    # Método para cerrar la base de datos
     def closeDB(self):
         with self.lock:
             print("Cerrando conexión con la bd")
