@@ -9,39 +9,6 @@ from src.index import Loop
 import threading
 
 
-def getDependencies(
-        configManager,
-        amqpManager, 
-        digitalSensorManager, 
-        analogicSensorManager
-    ):
-    
-    # Publicador RabbitMQ
-    if amqpManager == None:
-        try:
-            amqpManager = PublisherAMQP(configManager)
-            print("Conexión AMQP establecida")
-        except Exception as e:
-            print("Error al conectarse con servidor AMQP:", e)
-            amqpManager = None
-
-    # Sensores digitales
-    if digitalSensorManager == None:
-        try:
-            digitalSensorManager = DigitalSensors()
-            print("Sensores Digitales inicializados")
-        except Exception as e:
-            print("Error al conectar con los sensores digitales:", e)
-            digitalSensorManager = None
-
-    # Sensores analógicos
-    if analogicSensorManager == None:
-        try:
-            analogicSensorManager = AnalogicSensors()
-            print("Sensores analógicos inicializados")
-        except Exception as e:
-            print("Error al conectar con los sensores analógicos:", e)
-            analogicSensorManager = None
 
 def main():
     # Variables de entorno
@@ -68,11 +35,29 @@ def main():
         print("Error al iniciar base de datos:", e)
         dbManager = None
     
-    amqpManager = None
-    digitalSensorManager = None
-    analogicSensorManager = None
+    # Publicador RabbitMQ
+    try:
+        amqpManager = PublisherAMQP(configManager)
+        print("Conexión AMQP establecida")
+    except Exception as e:
+        print("Error al conectarse con servidor AMQP:", e)
+        amqpManager = None
 
-    getDependencies(configManager, amqpManager, digitalSensorManager, analogicSensorManager)
+    # Sensores digitales
+    try:
+        digitalSensorManager = DigitalSensors()
+        print("Sensores Digitales inicializados")
+    except Exception as e:
+        print("Error al conectar con los sensores digitales:", e)
+        digitalSensorManager = None
+
+    # Sensores analógicos
+    try:
+        analogicSensorManager = AnalogicSensors()
+        print("Sensores analógicos inicializados")
+    except Exception as e:
+        print("Error al conectar con los sensores analógicos:", e)
+        analogicSensorManager = None
 
     # Vista principal
     try:
@@ -96,7 +81,6 @@ def main():
 # Función para mantener ejecutando el tkinter
 def system_loop(analogicSensorManager, digitalSensorManager, dbManager, amqpManager, mainView, userConfig, configManager):
     while mainView.verifyRunning():
-        getDependencies(configManager, amqpManager, digitalSensorManager, analogicSensorManager)
         Loop(analogicSensorManager, digitalSensorManager, dbManager, amqpManager, mainView, userConfig)
 
 if __name__ == "__main__":
