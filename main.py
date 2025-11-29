@@ -10,41 +10,11 @@ import threading
 
 
 def getDependencies(
-        configManager, 
-        userConfig, 
-        dbManager, 
         amqpManager, 
         digitalSensorManager, 
         analogicSensorManager
     ):
-    # Inicializa los módulos y dependencias
-    # Variables de entorno
-    if configManager == None:
-        try:
-            configManager = Config()
-            print("Configuración Obtenida")
-        except Exception as e:
-            print("Error al obtener configuración:", e)
-            configManager = None
-
-    # Obtiene configuración de usuario
-    if userConfig == None:
-        try:
-            userConfig = ConfigUser()
-            print("Configuración de usuario obtenida")
-        except Exception as e:
-            print("Error al obtener configuración de usuario:", e)
-            userConfig = None
-
-    # DB
-    if dbManager == None:
-        try:
-            dbManager = LocalDB()
-            print("Base de datos iniciada")
-        except Exception as e:
-            print("Error al iniciar base de datos:", e)
-            dbManager = None
-
+    
     # Publicador RabbitMQ
     if amqpManager == None:
         try:
@@ -73,14 +43,35 @@ def getDependencies(
             analogicSensorManager = None
 
 def main():
-    configManager = None
-    userConfig = None
-    dbManager = None
+    # Variables de entorno
+    try:
+        configManager = Config()
+        print("Configuración Obtenida")
+    except Exception as e:
+        print("Error al obtener configuración:", e)
+        configManager = None
+
+    # Info de usuario
+    try:
+        userConfig = ConfigUser()
+        print("Configuración de usuario obtenida")
+    except Exception as e:
+        print("Error al obtener configuración de usuario:", e)
+        userConfig = None
+    
+    # DB
+    try:
+        dbManager = LocalDB()
+        print("Base de datos iniciada")
+    except Exception as e:
+        print("Error al iniciar base de datos:", e)
+        dbManager = None
+    
     amqpManager = None
     digitalSensorManager = None
     analogicSensorManager = None
 
-    getDependencies(configManager, userConfig, dbManager, amqpManager, digitalSensorManager, analogicSensorManager)
+    getDependencies(amqpManager, digitalSensorManager, analogicSensorManager)
 
     # Vista principal
     try:
@@ -104,7 +95,7 @@ def main():
 # Función para mantener ejecutando el tkinter
 def system_loop(analogicSensorManager, digitalSensorManager, dbManager, amqpManager, mainView, userConfig, configManager):
     while mainView.verifyRunning():
-        getDependencies(configManager, userConfig, dbManager, amqpManager, digitalSensorManager, analogicSensorManager)
+        getDependencies(amqpManager, digitalSensorManager, analogicSensorManager)
         Loop(analogicSensorManager, digitalSensorManager, dbManager, amqpManager, mainView, userConfig)
 
 if __name__ == "__main__":
