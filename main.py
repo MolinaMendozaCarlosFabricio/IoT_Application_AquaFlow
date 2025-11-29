@@ -10,6 +10,7 @@ import threading
 
 
 def getDependencies(
+        configManager,
         amqpManager, 
         digitalSensorManager, 
         analogicSensorManager
@@ -71,7 +72,7 @@ def main():
     digitalSensorManager = None
     analogicSensorManager = None
 
-    getDependencies(amqpManager, digitalSensorManager, analogicSensorManager)
+    getDependencies(configManager, amqpManager, digitalSensorManager, analogicSensorManager)
 
     # Vista principal
     try:
@@ -95,7 +96,7 @@ def main():
 # Función para mantener ejecutando el tkinter
 def system_loop(analogicSensorManager, digitalSensorManager, dbManager, amqpManager, mainView, userConfig, configManager):
     while mainView.verifyRunning():
-        getDependencies(amqpManager, digitalSensorManager, analogicSensorManager)
+        getDependencies(configManager, amqpManager, digitalSensorManager, analogicSensorManager)
         Loop(analogicSensorManager, digitalSensorManager, dbManager, amqpManager, mainView, userConfig)
 
 if __name__ == "__main__":

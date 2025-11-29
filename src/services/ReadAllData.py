@@ -1,13 +1,6 @@
 from datetime import datetime
 
 def GetSensorsData (analogicSensors, digitalSensors, dbManager, publisher, userConfig):
-    # Obtiene información del dispositivo y sensores
-    deviceInfo = dbManager.getDeviceInfo()
-    tempSensorInfo = dbManager.getSensor('ds18b20')
-    tdsSensorInfo = dbManager.getSensor('tdsSensor')
-    pHSensorInfo = dbManager.getSensor('phSensor')
-    turbiditySensorInfor = dbManager.getSensor('turbiditySensor')
-
     # Obtiene lecturas de sensores
     valueTempSensor = digitalSensors.read_temp()
     valuepHSensor, valueTdsSensor, valueTurbiditySensor, e = analogicSensors.getAnalogicSensorReadings()
