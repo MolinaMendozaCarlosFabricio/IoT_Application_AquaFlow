@@ -2,7 +2,7 @@ import json
 
 class ConfigUser:
     def __init__(self):
-        with open('userConfig.json', 'r') as file:
+        with open('src/config/userConfig.json', 'r') as file:
             data = json.load(file)
             self.deviceId = data["device_id"]
             self.userId = data["user_id"]
