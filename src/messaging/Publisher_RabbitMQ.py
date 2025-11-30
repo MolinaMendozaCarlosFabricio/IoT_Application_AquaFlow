@@ -4,6 +4,7 @@ import json
 class PublisherAMQP:
     def __init__(self, config):
         # Inicia la conexión con el broker AMQP y el exchange
+        print(config.getAMQPURL())
         self.__connection = pika.BlockingConnection(pika.ConnectionParameters(host=config.getAMQPURL()))
         self.__channel = self.__connection.channel()
         self.__exchange = config.getExchange()
