@@ -4,8 +4,17 @@ import json
 class PublisherAMQP:
     def __init__(self, config):
         # Inicia la conexión con el broker AMQP y el exchange
-        print(config.getAMQPURL())
-        self.__connection = pika.BlockingConnection(pika.ConnectionParameters(host=config.getAMQPURL()))
+        print(config.getAMQIP(), config.getAMQPPort(), config.getAMQPUsr(), config.getAMQPPwd())
+        self.__connection = pika.BlockingConnection(
+            pika.ConnectionParameters(
+                host=config.getAMQPIP(), 
+                port=config.getAMQPPort(),
+                credentials=pika.PlainCredentials(
+                    config.getAMQPUsr(),
+                    config.getAMQPPwd()
+                )
+            )
+        )
         self.__channel = self.__connection.channel()
         self.__exchange = config.getExchange()
         self.__channel.exchange_declare(exchange=self.__exchange, exchange_type='topic', durable=True)
