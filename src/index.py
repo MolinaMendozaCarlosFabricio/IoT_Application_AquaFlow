@@ -6,12 +6,13 @@ import time
 # Método loop
 def Loop(analogicSensors, digitalSensors, dbManager, publisher, mainView, userConfig):
     BackupSensorReadings(dbManager, publisher)
-    valueTempSensor, valueTdsSensor, valueTurbiditySensor, valuepHSensor = GetSensorsData(
+    valueTempSensor, valueTdsSensor, valueTurbiditySensor, valuepHSensor, taken = GetSensorsData(
         analogicSensors, digitalSensors, dbManager, publisher, userConfig
     )
-    mainView.showMeasurements(valueTurbiditySensor, valueTdsSensor, valuepHSensor, valueTempSensor)
+    if taken:
+        mainView.showMeasurements(valueTurbiditySensor, valueTdsSensor, valuepHSensor, valueTempSensor)
 
-    activities = CalculateWaterActivities(valuepHSensor, valueTdsSensor, valueTurbiditySensor, publisher, userConfig)
-    mainView.showActivities(activities)
+        activities = CalculateWaterActivities(valuepHSensor, valueTdsSensor, valueTurbiditySensor, publisher, userConfig)
+        mainView.showActivities(activities)
     # Lo último que se debe de ejecutar
     time.sleep(4)
